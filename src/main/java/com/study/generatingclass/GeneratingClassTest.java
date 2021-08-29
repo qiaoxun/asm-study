@@ -12,8 +12,8 @@ import java.nio.file.Files;
 
 public class GeneratingClassTest {
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
-        ClassWriter cw = new ClassWriter(0);
-        cw.visit(V1_8, ACC_PUBLIC + ACC_ABSTRACT, "com/study/generatingclass/Comparable",
+        ClassWriter cw = new ClassWriter(2);
+        cw.visit(V1_8, ACC_PUBLIC, "com/study/generatingclass/Comparable",
                 null, "java/lang/Object", null);
 
         MethodVisitor mv1 = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -26,8 +26,17 @@ public class GeneratingClassTest {
 
         cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "LESS", "I", null, new Integer(-1)).visitEnd();
         cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "EQUAL", "I", null, new Integer(0)).visitEnd();
-        cw.visitMethod(ACC_PUBLIC + ACC_ABSTRACT, "compareTo",
-                "(Ljava/lang/Object;)I", null, null).visitEnd();
+
+        {
+            MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "compareTo",
+                    "()I", null, null);
+
+            mv.visitCode();
+            mv.visitLdcInsn(1);
+            mv.visitInsn(IRETURN);
+            mv.visitMaxs(1, 1);
+            mv.visitEnd();
+        }
         cw.visitEnd();
 
         byte[] bytes = cw.toByteArray();
@@ -35,11 +44,11 @@ public class GeneratingClassTest {
         File file = new File("C:/study/note/study/Java/ASM/Comparable.class");
         Files.write(file.toPath(), bytes);
 
-//        TestClassLoader testClassLoader = new TestClassLoader(bytes);
-//        testClassLoader.loadClass("com.study.generatingclass.Comparable");
-//        Class clazz = testClassLoader.loadClass("com.study.generatingclass.Comparable");
-//        Object instance = clazz.newInstance();
-//        System.out.println(instance);
+        TestClassLoader testClassLoader = new TestClassLoader(bytes);
+        testClassLoader.loadClass("com.study.generatingclass.Comparable");
+        Class clazz = testClassLoader.loadClass("com.study.generatingclass.Comparable");
+        Object instance = clazz.newInstance();
+        System.out.println(instance);
 
     }
 }
