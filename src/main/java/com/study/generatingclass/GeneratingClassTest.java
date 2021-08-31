@@ -3,6 +3,7 @@ package com.study.generatingclass;
 import static org.objectweb.asm.Opcodes.*;
 
 import com.study.utils.TestClassLoader;
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 
@@ -16,13 +17,20 @@ public class GeneratingClassTest {
         cw.visit(V1_8, ACC_PUBLIC, "com/study/generatingclass/Comparable",
                 null, "java/lang/Object", null);
 
-        MethodVisitor mv1 = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-        mv1.visitCode();
-        mv1.visitVarInsn(ALOAD, 0);
-        mv1.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
-        mv1.visitInsn(RETURN);
-        mv1.visitMaxs(1, 1);
-        mv1.visitEnd();
+        {
+            AnnotationVisitor annotationVisitor0 = cw.visitAnnotation("Lcom/study/utils/HelloAnnotation;", true);
+            annotationVisitor0.visitEnd();
+        }
+
+        {
+            MethodVisitor mv1 = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+            mv1.visitCode();
+            mv1.visitVarInsn(ALOAD, 0);
+            mv1.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+            mv1.visitInsn(RETURN);
+            mv1.visitMaxs(1, 1);
+            mv1.visitEnd();
+        }
 
         cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "LESS", "I", null, new Integer(-1)).visitEnd();
         cw.visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "EQUAL", "I", null, new Integer(0)).visitEnd();
@@ -37,6 +45,17 @@ public class GeneratingClassTest {
             mv.visitMaxs(1, 1);
             mv.visitEnd();
         }
+
+        {
+            MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "toString", "()Ljava/lang/String;", null, null);
+
+            mv.visitCode();
+            mv.visitLdcInsn("This is a Test");
+            mv.visitInsn(ARETURN);
+            mv.visitMaxs(1, 1);
+            mv.visitEnd();
+        }
+
         cw.visitEnd();
 
         byte[] bytes = cw.toByteArray();

@@ -1,13 +1,21 @@
 package com.study.utils;
 
-public class HelloWorld {
+@HelloAnnotation
+public class HelloWorld<K> {
 
-    @Override
-    public String toString() {
-        return "test";
+    private K k;
+
+    public HelloWorld() {}
+
+    public HelloWorld(String name) {
+        System.out.println(name);
     }
 
-    public int compareTo() {
+    @HelloAnnotation
+    public int compareTo(String a) throws Exception {
+        if (a == null) {
+            throw new RuntimeException();
+        }
         return 1;
     }
 
@@ -15,4 +23,19 @@ public class HelloWorld {
     public Integer compareTo1() {
         return 1;
     }
+
+    public String toString() {
+        System.out.println("Test");
+        return "Test";
+    }
+
+    static class InnerHello {
+        private int i = 1;
+    }
+    
+    public byte[] toOracleStringWithReplacement(char[] paramArrayOfchar, int paramInt1, byte[] paramArrayOfbyte, int paramInt2, int[] paramArrayOfint) {
+
+        return null;
+    }
+
 }
