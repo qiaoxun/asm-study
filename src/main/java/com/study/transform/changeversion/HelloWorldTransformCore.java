@@ -1,9 +1,8 @@
-package com.study.classreader;
+package com.study.transform.changeversion;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +22,7 @@ public class HelloWorldTransformCore {
         int api = ASM8;
         int parsingOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
 
-        ClassVisitor classVisitor = new ClassVisitor(api, classWriter) {
-        };
+        ClassVisitor classVisitor = new ClassChangeVersionVisitor(api, classWriter);
 
         classReader.accept(classVisitor, parsingOptions);
 
