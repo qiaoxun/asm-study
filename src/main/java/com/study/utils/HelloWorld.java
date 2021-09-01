@@ -13,6 +13,8 @@ public class HelloWorld<K> {
 
     @HelloAnnotation
     public int compareTo(String a) throws Exception {
+        int b = 1;
+        System.out.println(b);
         if (a == null) {
             throw new RuntimeException();
         }
