@@ -29,7 +29,10 @@ public class AddFieldVisitor extends ClassVisitor {
     @Override
     public void visitEnd() {
         if (!isFieldPresent) {
-            cv.visitField(fieldAccess, fieldName, fieldDesc, null, fieldValue).visitEnd();
+            FieldVisitor fv = cv.visitField(fieldAccess, fieldName, fieldDesc, null, fieldValue);
+            if (null != fv) {
+                fv.visitEnd();
+            }
         }
         super.visitEnd();
     }
