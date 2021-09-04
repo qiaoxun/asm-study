@@ -3,7 +3,9 @@ package com.study.transform.editmethod;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-public abstract class EditMethodVisitor extends ClassVisitor {
+import static org.objectweb.asm.Opcodes.*;
+
+public class EditMethodVisitor extends ClassVisitor {
 
     private String methodName;
 
@@ -12,15 +14,37 @@ public abstract class EditMethodVisitor extends ClassVisitor {
         this.methodName = methodName;
     }
 
-    public abstract void editMethodBody(MethodVisitor methodVisitor);
-
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
+        MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (methodName.equals(name)) {
-            MethodVisitor mv = cv.visitMethod(access, name, descriptor, signature, exceptions);
-            editMethodBody(mv);
+            mv = new EditMethodAdapter(api, mv);
         }
-        return super.visitMethod(access, name, descriptor, signature, exceptions);
+        return mv;
+    }
+
+
+    public static class EditMethodAdapter extends MethodVisitor {
+
+        public EditMethodAdapter(int api, MethodVisitor methodVisitor) {
+            super(api, methodVisitor);
+        }
+
+        @Override
+        public void visitCode() {
+            super.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            super.visitLdcInsn("Entering method");
+            super.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            super.visitCode();
+        }
+
+        @Override
+        public void visitInsn(int opcode) {
+            super.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+            super.visitLdcInsn("Exiting method");
+            super.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+            super.visitInsn(opcode);
+        }
     }
 
 }
