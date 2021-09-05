@@ -27,9 +27,11 @@ public class HelloWorldTransformCore {
         int api = ASM8;
         int parsingOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
 
-        String methodName = "sayHello";
+        String methodName = "testParameter";
+        String methodDescriptor = "(IILjava/lang/String;Ljava/util/Date;)I";
 
-        ClassVisitor classVisitor = new EditMethodVisitor(api, classWriter, methodName);
+//        ClassVisitor classVisitor = new EditMethodVisitor(api, classWriter, methodName);
+        ClassVisitor classVisitor = new PrintParameterVisitor(api, classWriter, methodName, methodDescriptor);
 
         classReader.accept(classVisitor, parsingOptions);
 

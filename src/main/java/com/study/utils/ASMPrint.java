@@ -1,5 +1,6 @@
 package com.study.utils;
 
+import com.study.transform.editmethod.HelloWorldEM;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.ASMifier;
 import org.objectweb.asm.util.Printer;
@@ -13,8 +14,9 @@ import static org.objectweb.asm.Opcodes.ACC_STATIC;
 
 public class ASMPrint {
     public static void main(String[] args) throws IOException {
-        HelloWorld helloWorld = new HelloWorld("String");
-        String className = "com.study.utils.HelloWorld";
+        HelloWorldEM helloWorld = new HelloWorldEM();
+        String className = "com.study.transform.editmethod.HelloWorldEM";
+//        String className = "com.study.utils.HelloWorld";
         int parsingOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
         boolean asmCode = true;
 
