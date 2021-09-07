@@ -1,5 +1,8 @@
 package com.study.utils;
 
+import com.sun.org.apache.bcel.internal.generic.ISTORE;
+import org.objectweb.asm.Opcodes;
+
 @HelloAnnotation
 public class HelloWorld<K> {
 
@@ -21,8 +24,14 @@ public class HelloWorld<K> {
         return 1;
     }
 
-
     public Integer compareTo1() {
+        int b = 1;
+        return 1;
+    }
+
+
+    public static Integer compareTo2() {
+        int b = 1;
         return 1;
     }
 

@@ -14,9 +14,10 @@ import static org.objectweb.asm.Opcodes.ACC_STATIC;
 
 public class ASMPrint {
     public static void main(String[] args) throws IOException {
-        HelloWorldEM helloWorld = new HelloWorldEM();
-        String className = "com.study.transform.editmethod.HelloWorldEM";
-//        String className = "com.study.utils.HelloWorld";
+        HelloWorld helloWorld = new HelloWorld();
+//        HelloWorldEM helloWorld = new HelloWorldEM();
+//        String className = "com.study.transform.editmethod.HelloWorldEM";
+        String className = "com.study.utils.HelloWorld";
         int parsingOptions = ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG;
         boolean asmCode = true;
 

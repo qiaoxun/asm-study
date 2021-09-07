@@ -20,6 +20,12 @@ public class TestNullPointException {
                     // do nothing
                 }
                 return true;
+            } else {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
             }
         }
         return false;
